@@ -317,40 +317,6 @@ Output
 
 ---
 
-# 🔍 Understanding Semantics
-
-Python automatically determines the data type of a variable.
-
-```python
-age = 23
-
-print(type(age))
-```
-
-Output
-
-```
-<class 'int'>
-```
-
-Another example
-
-```python
-name = "Prav"
-
-print(type(name))
-```
-
-Output
-
-```
-<class 'str'>
-```
-
-[⬆ Back to Top](#-table-of-contents)
-
----
-
 # 🔄 Type Inference
 
 Python is a **dynamically typed** programming language.
