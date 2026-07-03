@@ -29,6 +29,12 @@
 
 ---
 
+## 🖼️ Visual Overview
+
+![Python Syntax and Semantics](images/python-syntax-and-semantics.png)
+
+---
+
 # 📖 Introduction
 
 Python is one of the most beginner-friendly programming languages because of its clean and readable syntax.
