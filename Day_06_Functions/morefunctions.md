@@ -67,7 +67,7 @@ print(temp_conv(75, "F"))
 ```
 77.0
 
-23.89
+23.88888888888889
 ```
 
 [⬆ Back to Top](#-table-of-contents)
@@ -166,7 +166,7 @@ print(calculate_cost(cart))
 ### Output
 
 ```
-7.7
+7.699999999999999
 ```
 
 [⬆ Back to Top](#-table-of-contents)

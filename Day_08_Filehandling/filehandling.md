@@ -23,7 +23,7 @@
 
 ---
 
-![File Handling in Python](images/filehanding.png)
+![File Handling in Python](images/filehandling.png)
 
 ---
 
@@ -93,7 +93,7 @@ with open("example.txt", "r") as file:
         print(line.strip())
 ```
 
-> **Note:** `strip()` removes newline (`\n`) characters from the end of each line.
+> **Note:** `strip()` removes leading and trailing whitespace (including the newline `\n`) from each line. To remove only the trailing newline, use `rstrip('\n')`.
 
 [⬆ Back to Top](#-table-of-contents)
 
@@ -117,7 +117,6 @@ Example file contents
 
 ```
 Hello World!
-
 This is a new file.
 ```
 
@@ -237,7 +236,6 @@ Output
 
 ```
 Hello World!
-
 This is a new line.
 ```
 
@@ -505,7 +503,7 @@ Print the absolute path of a file.
 
 ## 🎯 What's Next?
 
-In **Day 13**, you'll learn about **Exception Handling in Python**, including:
+In **Day 09**, you'll learn about **Exception Handling in Python**, including:
 
 - ⚠️ Types of Exceptions
 - 🛡️ `try` and `except`

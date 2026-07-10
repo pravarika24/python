@@ -493,7 +493,7 @@ Write functions to calculate area and perimeter.
 
 ## 🎯 What's Next?
 
-In **Day 11**, you'll learn about **File Handling in Python**, including:
+In **Day 08**, you'll learn about **File Handling in Python**, including:
 
 - 📂 Opening Files
 - ✍️ Reading Files

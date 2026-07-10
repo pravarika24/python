@@ -553,7 +553,7 @@ Write a function that returns both the sum and product of two numbers.
 
 ## 🎯 What's Next?
 
-In **Day 06**, you'll learn about **Lambda Functions, Map, Filter, and Reduce**, including:
+In **Day 07**, you'll learn about **Lambda Functions, Map, Filter, and Reduce**, including:
 
 - 🔹 Lambda Functions
 - 🔹 Anonymous Functions

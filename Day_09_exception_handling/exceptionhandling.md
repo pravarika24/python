@@ -11,6 +11,7 @@
 - [The `try` and `except` Block](#-the-try-and-except-block)
 - [Handling Specific Exceptions](#-handling-specific-exceptions)
 - [Handling Multiple Exceptions](#-handling-multiple-exceptions)
+- [User Input Example](#-user-input-example)
 - [The `else` Block](#-the-else-block)
 - [The `finally` Block](#-the-finally-block)
 - [Exception Handling with File Operations](#-exception-handling-with-file-operations)
@@ -462,11 +463,12 @@ Create a calculator program that handles:
 
 ## 🎯 What's Next?
 
-In **Day 14**, you'll learn about **Custom Exceptions in Python**, including:
+In **Day 10**, you'll learn about **Object-Oriented Programming (OOP) in Python**, including:
 
-- 🛠️ Raising Exceptions
-- 🎯 Creating Custom Exception Classes
-- 🚀 Using the `raise` Keyword
-- 🌍 Practical Examples
+- 🧱 Classes and Objects
+- 🧬 Inheritance
+- 🎭 Polymorphism
+- 🔒 Encapsulation and Abstraction
+- ✨ Magic Methods and Operator Overloading
 
 Happy Coding! 🚀

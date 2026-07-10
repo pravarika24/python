@@ -388,18 +388,27 @@ Output
 
 # ❌ Common Errors
 
-### Using `json.dump()` Instead of `json.dumps()`
+### Confusing `json.dump()` with `json.dumps()`
 
-Incorrect
+`json.dumps()` converts an object to a JSON **string**, while `json.dump()` writes JSON to a **file object** and requires a file as its second argument. Calling `json.dump(data)` alone raises a `TypeError`.
+
+Incorrect (missing the file argument)
 
 ```python
 json.dump(data)
 ```
 
-Correct
+Correct (get a JSON string)
 
 ```python
-json.dumps(data)
+json_string = json.dumps(data)
+```
+
+Correct (write directly to a file)
+
+```python
+with open("data.json", "w") as f:
+    json.dump(data, f)
 ```
 
 ---
@@ -534,7 +543,7 @@ Print today's date and the date seven days from today.
 
 ## 🎯 What's Next?
 
-In **Day 12**, you'll learn about **File Handling in Python**, including:
+In **Day 08**, you'll learn about **File Handling in Python**, including:
 
 - 📂 Opening Files
 - 📖 Reading Files

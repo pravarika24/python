@@ -29,7 +29,7 @@
 
 # 📖 Introduction to Dictionaries
 
-A **dictionary** is an unordered collection of items that stores data as **key-value pairs**.
+A **dictionary** is an ordered collection of items (since Python 3.7) that stores data as **key-value pairs**.
 
 Each key is unique and immutable (such as strings, numbers, or tuples), while values can be of any data type.
 
@@ -51,7 +51,7 @@ student = {
 - Values can be of any data type
 - Mutable (can be modified)
 
-> **Note:** Databases like **MongoDB** also store data in a key-value (document) format.
+> **Note:** Document databases like **MongoDB** store data in a JSON-like (document) format, and key-value stores like **Redis** use a key-value model similar to Python dictionaries.
 
 [⬆ Back to Top](#-table-of-contents)
 
@@ -126,7 +126,7 @@ print(student)
 Output
 
 ```
-{'name': 'prav', 'age': 27}
+{'name': 'prav2', 'age': 27}
 ```
 
 > **Note:** Dictionary keys must be unique. If duplicate keys exist, the last value overwrites the previous one.
@@ -653,12 +653,12 @@ Create a nested dictionary for three students and print each student's informati
 
 ## 🎯 What's Next?
 
-In **Day 09**, you'll learn about **Exception Handling in Python**, including:
+In **Day 06**, you'll learn about **Functions in Python**, including:
 
-- Try and Except
-- Else and Finally
-- Raising Exceptions
-- Custom Exceptions
+- Defining and Calling Functions
+- Parameters and Arguments
+- Return Values
+- Lambda, Map, and Filter
 - Practical Examples
 
 Happy Coding! 🚀

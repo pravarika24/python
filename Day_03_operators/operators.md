@@ -91,7 +91,7 @@ Multiplication: 300
 Division: 0.75
 Floor Division: 0
 Modulus: 15
-Exponentiation: 332842204964336809...
+Exponentiation: 332525673007965087890625
 ```
 
 > **Note:** Floor division (`//`) returns the integer quotient by discarding the decimal part.
