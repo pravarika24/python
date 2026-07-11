@@ -1,0 +1,1631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 05 · Data Structures — Python 10-Day Codex</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%90%8D</text></svg>">
+<style>
+:root{
+  --bg:#f8f5f0; --bg2:#ffffff; --bg3:#f2ede4; --code:#f6f1ea;
+  --line:#e6e6df; --line2:#d7d7ce; --ink:#171a1e; --muted:#5c6068; --faint:#9a9ea5;
+  --accent:#c0562f; --accent-text:#9f461f; --blue:#c0562f; --good:#5c7d3a;
+  --c-key:#8a3ffb; --c-str:#1f7a41; --c-num:#a35a12; --c-com:#9aa0a6; --c-fn:#1f6fb8; --c-self:#b23a70;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 24px 48px -32px rgba(30,40,35,.24);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 42% at 50% -6%, color-mix(in srgb,var(--blue) 22%,transparent), transparent 70%),
+             radial-gradient(46% 34% at 88% 4%, color-mix(in srgb,var(--accent) 16%,transparent), transparent 72%)}
+a{color:var(--accent-text)}
+.deadlink{color:var(--muted)}
+::selection{background:var(--accent);color:#111}
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 22px}
+.topbar{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);
+  background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--line)}
+.topbar .row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0}
+.back{font-family:var(--mono);font-size:.82rem;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line2);padding:8px 14px;border-radius:10px;background:var(--bg2);transition:border-color .15s}
+.back:hover{border-color:var(--blue)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;color:#fff;font-size:14px;position:relative}
+.mark::after{content:"";position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:4px;
+  background:color-mix(in srgb,var(--accent) 45%,#fff);box-shadow:0 0 0 3px var(--bg)}
+.swatches{display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:300px}
+.swatches button{width:18px;height:18px;border-radius:50%;border:2px solid var(--line2);cursor:pointer;padding:0;transition:transform .12s}
+.swatches button:hover{transform:scale(1.16)}
+.swatches button.sel{outline:2px solid var(--ink);outline-offset:2px;border-color:#fff}
+.swatches button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.hero{padding:46px 0 20px;display:flex;align-items:center;gap:20px}
+.hero .num{font-family:var(--mono);font-weight:700;color:#fff;background:var(--accent);
+  padding:14px 16px;border-radius:16px;text-align:center;line-height:1;flex:none;box-shadow:var(--shadow)}
+.hero .num small{display:block;font-size:.56rem;letter-spacing:.18em;opacity:.72;margin-bottom:5px}
+.hero .num b{font-size:1.9rem;letter-spacing:-.02em}
+.hero h1{font-size:clamp(1.8rem,5vw,2.9rem);letter-spacing:-.025em;line-height:1.04;font-weight:800;text-wrap:balance}
+.hero .tag{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:6px}
+.subnav{display:flex;gap:8px;padding:8px 0 4px;position:sticky;top:60px;z-index:9}
+.subnav a{font-family:var(--mono);font-size:.76rem;text-decoration:none;color:var(--muted);
+  background:var(--bg2);border:1px solid var(--line);padding:7px 14px;border-radius:9px}
+.subnav a:hover{color:var(--accent-text);border-color:var(--line2)}
+.section{padding:26px 0}
+.sec-h{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-text);
+  display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sec-h::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--accent)}
+.sec-sub{color:var(--faint);font-size:.86rem;margin-bottom:18px}
+.notefile,.nbtitle{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:26px 0 10px}
+.nbtitle{color:var(--accent-text);display:flex;align-items:center;gap:9px}
+.nbtitle::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--accent)}
+.md{max-width:70ch}
+.md h1,.md h2,.md h3,.md h4{letter-spacing:-.01em;line-height:1.2;margin:1.1em 0 .4em;text-wrap:balance;scroll-margin-top:84px}
+.md h1{font-size:1.5rem}.md h2{font-size:1.24rem}.md h3{font-size:1.06rem}.md h4{font-size:.96rem;color:var(--muted)}
+.md p{margin:.55em 0}.md ul,.md ol{margin:.5em 0 .5em 1.3em}.md li{margin:.24em 0}
+.md blockquote{border-left:3px solid var(--accent);background:var(--bg3);padding:10px 16px;margin:.8em 0;border-radius:0 8px 8px 0;color:var(--muted)}
+.md hr{border:0;border-top:1px solid var(--line);margin:1.4em 0}
+.md :not(pre)>code{font-family:var(--mono);font-size:.86em;background:var(--bg3);border:1px solid var(--line);padding:1px 6px;border-radius:6px}
+.md table{border-collapse:collapse;margin:.8em 0;font-size:.9rem;display:block;overflow-x:auto}
+.md th,.md td{border:1px solid var(--line);padding:7px 12px;text-align:left}.md th{background:var(--bg3);font-family:var(--mono);font-size:.78rem}
+.md pre,.cell pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:.7em 0;font-family:var(--mono);font-size:.83rem;line-height:1.65}
+.cell{background:var(--code);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:12px 0}
+.cell-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line)}
+.cell-head .in{font-family:var(--mono);font-size:.68rem;color:var(--faint)}
+.cell pre{margin:0;border:0;border-radius:0;background:none}
+.run{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--good);background:transparent;
+  border:1px solid color-mix(in srgb,var(--good) 45%,transparent);padding:4px 11px;border-radius:7px;cursor:pointer}
+.run:hover{background:color-mix(in srgb,var(--good) 14%,transparent)}.run[disabled]{opacity:.5;cursor:default}
+.out{border-top:1px dashed var(--line2);background:color-mix(in srgb,var(--good) 8%,var(--code));max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;padding:0 16px}
+.out.show{max-height:520px;padding:12px 16px}
+.out .olab{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.out pre{background:none;border:0;padding:0;color:var(--good);font-family:var(--mono);font-size:.82rem;white-space:pre-wrap}
+.tok-key{color:var(--c-key)}.tok-str{color:var(--c-str)}.tok-num{color:var(--c-num)}.tok-com{color:var(--c-com);font-style:italic}.tok-fn{color:var(--c-fn)}.tok-self{color:var(--c-self)}
+.pager{display:flex;gap:14px;justify-content:space-between;padding:20px 0 70px;border-top:1px solid var(--line);margin-top:20px}
+.pager a{flex:1;text-decoration:none;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px 18px;transition:border-color .15s}
+.pager a:hover{border-color:var(--blue)}
+.pager .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.pager .v{font-weight:700;letter-spacing:-.01em;margin-top:3px}
+.pager .next{text-align:right}.pager .disabled{opacity:.4;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap row">
+  <a class="back" href="../index.html">‹ All 10 days</a>
+  <div class="brand"><div class="mark">Py</div>Python · 10-Day Codex</div>
+</div></div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="num"><small>DAY</small><b>05</b></div>
+    <div><h1>Data Structures</h1><div class="tag">collections of values</div></div>
+  </div>
+  <div class="subnav"><a href="#notes">Concepts &amp; Notes</a><a href="#code">Notebook Code</a></div>
+
+  <section class="section" id="notes">
+    <div class="sec-h">Concepts &amp; Notes</div>
+    <div class="sec-sub">Everything from this day's written guides.</div>
+    <div class="notefile">Dictionaries.md</div><div class="md"><h1 id="-day-05-dictionaries-in-python">📘 Day 05: Dictionaries in Python</h1>
+<blockquote>
+<p>Dictionaries are one of Python's most powerful data structures. They store data as <strong>key-value pairs</strong>, allowing fast and efficient retrieval of information.</p>
+</blockquote>
+<hr />
+<h2 id="-table-of-contents">📑 Table of Contents</h2>
+<ul>
+<li><a href="#-introduction-to-dictionaries">Introduction to Dictionaries</a></li>
+<li><a href="#-creating-dictionaries">Creating Dictionaries</a></li>
+<li><a href="#-accessing-dictionary-elements">Accessing Dictionary Elements</a></li>
+<li><a href="#-modifying-dictionaries">Modifying Dictionaries</a></li>
+<li><a href="#-dictionary-methods">Dictionary Methods</a></li>
+<li><a href="#-shallow-copy">Shallow Copy</a></li>
+<li><a href="#-iterating-over-dictionaries">Iterating Over Dictionaries</a></li>
+<li><a href="#-nested-dictionaries">Nested Dictionaries</a></li>
+<li><a href="#-dictionary-comprehensions">Dictionary Comprehensions</a></li>
+<li><a href="#-practical-examples">Practical Examples</a></li>
+<li><a href="#-common-errors">Common Errors</a></li>
+<li><a href="#-best-practices">Best Practices</a></li>
+<li><a href="#-summary">Summary</a></li>
+<li><a href="#-practice-exercises">Practice Exercises</a></li>
+</ul>
+<hr />
+<hr />
+<h1 id="-introduction-to-dictionaries">📖 Introduction to Dictionaries</h1>
+<p>A <strong>dictionary</strong> is an ordered collection of items (since Python 3.7) that stores data as <strong>key-value pairs</strong>.</p>
+<p>Each key is unique and immutable (such as strings, numbers, or tuples), while values can be of any data type.</p>
+<p>Example</p>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;prav&quot;,
+    &quot;age&quot;: 32,
+    &quot;grade&quot;: &quot;A&quot;
+}
+</code></pre>
+<h3 id="characteristics">Characteristics</h3>
+<ul>
+<li>Stores data in key-value pairs</li>
+<li>Keys must be unique</li>
+<li>Keys are immutable</li>
+<li>Values can be of any data type</li>
+<li>Mutable (can be modified)</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Document databases like <strong>MongoDB</strong> store data in a JSON-like (document) format, and key-value stores like <strong>Redis</strong> use a key-value model similar to Python dictionaries.</p>
+</blockquote>
+<hr />
+<h1 id="-creating-dictionaries">📝 Creating Dictionaries</h1>
+<h3 id="empty-dictionary">Empty Dictionary</h3>
+<pre><code class="language-python">empty_dict = {}
+
+print(type(empty_dict))
+</code></pre>
+<p>Output</p>
+<pre><code>&lt;class 'dict'&gt;
+</code></pre>
+<hr />
+<h3 id="using-the-dict-constructor">Using the <code>dict()</code> Constructor</h3>
+<pre><code class="language-python">empty_dict = dict()
+
+print(empty_dict)
+</code></pre>
+<p>Output</p>
+<pre><code>{}
+</code></pre>
+<hr />
+<h3 id="creating-a-dictionary">Creating a Dictionary</h3>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;prav&quot;,
+    &quot;age&quot;: 32,
+    &quot;grade&quot;: &quot;A&quot;
+}
+
+print(student)
+</code></pre>
+<p>Output</p>
+<pre><code>{'name': 'prav', 'age': 32, 'grade': 'A'}
+</code></pre>
+<hr />
+<h3 id="duplicate-keys">Duplicate Keys</h3>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;Prav&quot;,
+    &quot;age&quot;: 27,
+    &quot;name&quot;: &quot;prav2&quot;
+}
+
+print(student)
+</code></pre>
+<p>Output</p>
+<pre><code>{'name': 'prav2', 'age': 27}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> Dictionary keys must be unique. If duplicate keys exist, the last value overwrites the previous one.</p>
+</blockquote>
+<hr />
+<h1 id="-accessing-dictionary-elements">🔍 Accessing Dictionary Elements</h1>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;Prav&quot;,
+    &quot;age&quot;: 32,
+    &quot;grade&quot;: &quot;A&quot;
+}
+</code></pre>
+<h3 id="using-square-brackets">Using Square Brackets</h3>
+<pre><code class="language-python">print(student[&quot;grade&quot;])
+print(student[&quot;age&quot;])
+</code></pre>
+<p>Output</p>
+<pre><code>A
+32
+</code></pre>
+<hr />
+<h3 id="using-get">Using <code>get()</code></h3>
+<pre><code class="language-python">print(student.get(&quot;grade&quot;))
+</code></pre>
+<p>Output</p>
+<pre><code>A
+</code></pre>
+<p>If the key doesn't exist:</p>
+<pre><code class="language-python">print(student.get(&quot;last_name&quot;))
+</code></pre>
+<p>Output</p>
+<pre><code>None
+</code></pre>
+<p>Provide a default value.</p>
+<pre><code class="language-python">print(student.get(&quot;last_name&quot;, &quot;Not Available&quot;))
+</code></pre>
+<p>Output</p>
+<pre><code>Not Available
+</code></pre>
+<hr />
+<h1 id="-modifying-dictionaries">✏️ Modifying Dictionaries</h1>
+<p>Dictionaries are mutable.</p>
+<h3 id="updating-a-value">Updating a Value</h3>
+<pre><code class="language-python">student[&quot;age&quot;] = 33
+
+print(student)
+</code></pre>
+<hr />
+<h3 id="adding-a-new-key">Adding a New Key</h3>
+<pre><code class="language-python">student[&quot;address&quot;] = &quot;India&quot;
+
+print(student)
+</code></pre>
+<hr />
+<h3 id="deleting-a-key">Deleting a Key</h3>
+<pre><code class="language-python">del student[&quot;grade&quot;]
+
+print(student)
+</code></pre>
+<hr />
+<h1 id="-dictionary-methods">⚙️ Dictionary Methods</h1>
+<h3 id="keys"><code>keys()</code></h3>
+<p>Returns all keys.</p>
+<pre><code class="language-python">print(student.keys())
+</code></pre>
+<hr />
+<h3 id="values"><code>values()</code></h3>
+<p>Returns all values.</p>
+<pre><code class="language-python">print(student.values())
+</code></pre>
+<hr />
+<h3 id="items"><code>items()</code></h3>
+<p>Returns all key-value pairs.</p>
+<pre><code class="language-python">print(student.items())
+</code></pre>
+<hr />
+<h3 id="pop"><code>pop()</code></h3>
+<p>Removes a key.</p>
+<pre><code class="language-python">student.pop(&quot;age&quot;)
+
+print(student)
+</code></pre>
+<hr />
+<h3 id="clear"><code>clear()</code></h3>
+<p>Removes all items.</p>
+<pre><code class="language-python">student.clear()
+
+print(student)
+</code></pre>
+<hr />
+<h1 id="-shallow-copy">📄 Shallow Copy</h1>
+<p>Assigning one dictionary to another creates a reference.</p>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;Prav&quot;,
+    &quot;age&quot;: 32
+}
+
+student_copy = student
+
+student[&quot;name&quot;] = &quot;Prav2&quot;
+
+print(student)
+print(student_copy)
+</code></pre>
+<p>Output</p>
+<pre><code>{'name': 'Prav2', 'age': 32}
+{'name': 'Prav2', 'age': 32}
+</code></pre>
+<p>Both variables refer to the same dictionary.</p>
+<hr />
+<h3 id="creating-a-shallow-copy">Creating a Shallow Copy</h3>
+<pre><code class="language-python">student_copy = student.copy()
+
+student[&quot;name&quot;] = &quot;Prav3&quot;
+
+print(student)
+print(student_copy)
+</code></pre>
+<p>Output</p>
+<pre><code>{'name': 'Prav3', 'age': 32}
+{'name': 'Prav2', 'age': 32}
+</code></pre>
+<blockquote>
+<p><strong>Important:</strong> <code>copy()</code> creates a shallow copy, which is a new dictionary object.</p>
+</blockquote>
+<hr />
+<h1 id="-iterating-over-dictionaries">🔄 Iterating Over Dictionaries</h1>
+<h3 id="iterate-over-keys">Iterate Over Keys</h3>
+<pre><code class="language-python">for key in student.keys():
+    print(key)
+</code></pre>
+<hr />
+<h3 id="iterate-over-values">Iterate Over Values</h3>
+<pre><code class="language-python">for value in student.values():
+    print(value)
+</code></pre>
+<hr />
+<h3 id="iterate-over-key-value-pairs">Iterate Over Key-Value Pairs</h3>
+<pre><code class="language-python">for key, value in student.items():
+    print(f&quot;{key}: {value}&quot;)
+</code></pre>
+<p>Output</p>
+<pre><code>name: Prav
+age: 32
+</code></pre>
+<hr />
+<h1 id="-nested-dictionaries">🧩 Nested Dictionaries</h1>
+<p>A dictionary can contain other dictionaries.</p>
+<pre><code class="language-python">students = {
+    &quot;student1&quot;: {
+        &quot;name&quot;: &quot;Rikku&quot;,
+        &quot;age&quot;: 32
+    },
+    &quot;student2&quot;: {
+        &quot;name&quot;: &quot;Prav&quot;,
+        &quot;age&quot;: 28
+    }
+}
+</code></pre>
+<p>Access nested values.</p>
+<pre><code class="language-python">print(students[&quot;student2&quot;][&quot;name&quot;])
+</code></pre>
+<p>Output</p>
+<pre><code>Prav
+</code></pre>
+<h3 id="iterating-over-nested-dictionaries">Iterating Over Nested Dictionaries</h3>
+<pre><code class="language-python">for student_id, student_info in students.items():
+
+    print(student_id)
+
+    for key, value in student_info.items():
+        print(f&quot;{key}: {value}&quot;)
+</code></pre>
+<hr />
+<h1 id="-dictionary-comprehensions">🚀 Dictionary Comprehensions</h1>
+<p>Create dictionaries in a single line.</p>
+<pre><code class="language-python">squares = {x: x**2 for x in range(5)}
+
+print(squares)
+</code></pre>
+<p>Output</p>
+<pre><code>{0:0, 1:1, 2:4, 3:9, 4:16}
+</code></pre>
+<hr />
+<h3 id="conditional-dictionary-comprehension">Conditional Dictionary Comprehension</h3>
+<pre><code class="language-python">evens = {x: x**2 for x in range(10) if x % 2 == 0}
+
+print(evens)
+</code></pre>
+<p>Output</p>
+<pre><code>{0:0, 2:4, 4:16, 6:36, 8:64}
+</code></pre>
+<hr />
+<h1 id="-practical-examples">🌍 Practical Examples</h1>
+<h2 id="count-the-frequency-of-elements">Count the Frequency of Elements</h2>
+<pre><code class="language-python">numbers = [1,2,2,3,3,3,4,4,4,4]
+
+frequency = {}
+
+for number in numbers:
+
+    if number in frequency:
+        frequency[number] += 1
+    else:
+        frequency[number] = 1
+
+print(frequency)
+</code></pre>
+<p>Output</p>
+<pre><code>{1:1, 2:2, 3:3, 4:4}
+</code></pre>
+<hr />
+<h2 id="merge-two-dictionaries">Merge Two Dictionaries</h2>
+<pre><code class="language-python">dict1 = {
+    &quot;a&quot;: 1,
+    &quot;b&quot;: 2
+}
+
+dict2 = {
+    &quot;b&quot;: 3,
+    &quot;c&quot;: 4
+}
+
+merged_dict = {**dict1, **dict2}
+
+print(merged_dict)
+</code></pre>
+<p>Output</p>
+<pre><code>{'a': 1, 'b': 3, 'c': 4}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> If duplicate keys exist, values from the second dictionary overwrite the first.</p>
+</blockquote>
+<hr />
+<h1 id="-common-errors">❌ Common Errors</h1>
+<h3 id="accessing-a-missing-key">Accessing a Missing Key</h3>
+<pre><code class="language-python">print(student[&quot;address&quot;])
+</code></pre>
+<p>Raises</p>
+<pre><code>KeyError
+</code></pre>
+<p>Use <code>get()</code> instead.</p>
+<pre><code class="language-python">print(student.get(&quot;address&quot;))
+</code></pre>
+<hr />
+<h3 id="duplicate-keys_1">Duplicate Keys</h3>
+<pre><code class="language-python">student = {
+    &quot;name&quot;: &quot;John&quot;,
+    &quot;name&quot;: &quot;David&quot;
+}
+</code></pre>
+<p>Only the last value is retained.</p>
+<hr />
+<h3 id="mutable-keys">Mutable Keys</h3>
+<pre><code class="language-python">student = {
+    [1,2]: &quot;Python&quot;
+}
+</code></pre>
+<p>Raises</p>
+<pre><code>TypeError
+</code></pre>
+<p>Lists cannot be used as dictionary keys.</p>
+<hr />
+<h1 id="-best-practices">✅ Best Practices</h1>
+<ul>
+<li>Use meaningful key names.</li>
+<li>Prefer <code>get()</code> when a key may not exist.</li>
+<li>Avoid duplicate keys.</li>
+<li>Use <code>copy()</code> when creating a separate dictionary.</li>
+<li>Use dictionary comprehensions for concise code.</li>
+<li>Store related information together using nested dictionaries.</li>
+</ul>
+<hr />
+<h1 id="-summary">📚 Summary</h1>
+<p>In this chapter, you learned:</p>
+<ul>
+<li>✅ Creating dictionaries</li>
+<li>✅ Accessing dictionary elements</li>
+<li>✅ Updating and deleting values</li>
+<li>✅ Dictionary methods</li>
+<li>✅ Shallow copy</li>
+<li>✅ Iterating through dictionaries</li>
+<li>✅ Nested dictionaries</li>
+<li>✅ Dictionary comprehensions</li>
+<li>✅ Practical examples</li>
+<li>✅ Common errors</li>
+<li>✅ Best practices</li>
+</ul>
+<p>Dictionaries are one of the most efficient data structures in Python for storing and retrieving data using keys.</p>
+<hr />
+<h1 id="-practice-exercises">💻 Practice Exercises</h1>
+<h3 id="exercise-1">Exercise 1</h3>
+<p>Create a dictionary containing:</p>
+<ul>
+<li>Name</li>
+<li>Age</li>
+<li>City</li>
+</ul>
+<p>Print all the key-value pairs.</p>
+<hr />
+<h3 id="exercise-2">Exercise 2</h3>
+<p>Add a new key called <code>"email"</code> to the dictionary.</p>
+<hr />
+<h3 id="exercise-3">Exercise 3</h3>
+<p>Count the frequency of characters in a string using a dictionary.</p>
+<hr />
+<h3 id="exercise-4">Exercise 4</h3>
+<p>Merge two dictionaries and display the result.</p>
+<hr />
+<h3 id="exercise-5">Exercise 5</h3>
+<p>Create a nested dictionary for three students and print each student's information.</p>
+<hr />
+<h2 id="-whats-next">🎯 What's Next?</h2>
+<p>In <strong>Day 06</strong>, you'll learn about <strong>Functions in Python</strong>, including:</p>
+<ul>
+<li>Defining and Calling Functions</li>
+<li>Parameters and Arguments</li>
+<li>Return Values</li>
+<li>Lambda, Map, and Filter</li>
+<li>Practical Examples</li>
+</ul>
+<p>Happy Coding! 🚀</p></div>
+<div class="notefile">Lists.md</div><div class="md"><h1 id="-day-05-lists-in-python">📘 Day 05: Lists in Python</h1>
+<blockquote>
+<p>Lists are one of the most commonly used data structures in Python. They allow you to store multiple values in a single variable and provide powerful methods to manipulate data efficiently.</p>
+</blockquote>
+<hr />
+<h2 id="-table-of-contents">📑 Table of Contents</h2>
+<ul>
+<li><a href="#-introduction-to-lists">Introduction to Lists</a></li>
+<li><a href="#-creating-lists">Creating Lists</a></li>
+<li><a href="#-accessing-list-elements">Accessing List Elements</a></li>
+<li><a href="#-modifying-list-elements">Modifying List Elements</a></li>
+<li><a href="#-list-methods">List Methods</a></li>
+<li><a href="#-slicing-lists">Slicing Lists</a></li>
+<li><a href="#-iterating-over-lists">Iterating Over Lists</a></li>
+<li><a href="#-list-comprehensions">List Comprehensions</a></li>
+<li><a href="#-nested-list-comprehensions">Nested List Comprehensions</a></li>
+<li><a href="#-practical-examples">Practical Examples</a></li>
+<li><a href="#-common-errors">Common Errors</a></li>
+<li><a href="#-best-practices">Best Practices</a></li>
+<li><a href="#-summary">Summary</a></li>
+<li><a href="#-practice-exercises">Practice Exercises</a></li>
+</ul>
+<hr />
+<hr />
+<h1 id="-introduction-to-lists">📖 Introduction to Lists</h1>
+<p>A <strong>list</strong> is an ordered and mutable collection of items.</p>
+<p>Lists can contain:</p>
+<ul>
+<li>Integers</li>
+<li>Floating-point numbers</li>
+<li>Strings</li>
+<li>Boolean values</li>
+<li>Other lists</li>
+<li>Mixed data types</li>
+</ul>
+<p>Lists are created using square brackets (<code>[]</code>).</p>
+<p>Example</p>
+<pre><code class="language-python">fruits = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;]
+</code></pre>
+<hr />
+<h1 id="-creating-lists">📝 Creating Lists</h1>
+<h2 id="empty-list">Empty List</h2>
+<pre><code class="language-python">lst = []
+
+print(type(lst))
+</code></pre>
+<p>Output</p>
+<pre><code>&lt;class 'list'&gt;
+</code></pre>
+<hr />
+<h2 id="list-of-strings">List of Strings</h2>
+<pre><code class="language-python">names = [&quot;pravarika&quot;,&quot;rikku&quot;,&quot;prav&quot;]
+
+print(names)
+</code></pre>
+<p>Output</p>
+<pre><code>['pravarika', 'rikku', 'prav']
+</code></pre>
+<hr />
+<h2 id="mixed-data-type-list">Mixed Data Type List</h2>
+<pre><code class="language-python">mixed_list = [2, &quot;Prav&quot;, 5.6, True]
+
+print(mixed_list)
+</code></pre>
+<p>Output</p>
+<pre><code>[2, 'Prav', 5.6, True]
+</code></pre>
+<hr />
+<h1 id="-accessing-list-elements">🔍 Accessing List Elements</h1>
+<p>Python uses <strong>zero-based indexing</strong>.</p>
+<pre><code class="language-python">fruits = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;, &quot;Kiwi&quot;, &quot;Guava&quot;]
+</code></pre>
+<p>Access elements using their index.</p>
+<pre><code class="language-python">print(fruits[0])
+
+print(fruits[2])
+
+print(fruits[-1])
+</code></pre>
+<p>Output</p>
+<pre><code>Apple
+
+Cherry
+
+Guava
+</code></pre>
+<hr />
+<h1 id="-slicing-lists">✂️ Slicing Lists</h1>
+<p>Slicing extracts a portion of a list.</p>
+<pre><code class="language-python">print(fruits[1:])
+</code></pre>
+<p>Output</p>
+<pre><code>['Banana', 'Cherry', 'Kiwi', 'Guava']
+</code></pre>
+<hr />
+<pre><code class="language-python">print(fruits[1:3])
+</code></pre>
+<p>Output</p>
+<pre><code>['Banana', 'Cherry']
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The ending index is <strong>not included</strong>.</p>
+</blockquote>
+<hr />
+<h1 id="-modifying-list-elements">✏️ Modifying List Elements</h1>
+<p>Lists are mutable.</p>
+<p>Replace an element.</p>
+<pre><code class="language-python">fruits[1] = &quot;Watermelon&quot;
+
+print(fruits)
+</code></pre>
+<p>Output</p>
+<pre><code>['Apple', 'Watermelon', 'Cherry', 'Kiwi', 'Guava']
+</code></pre>
+<p>Replace multiple elements.</p>
+<pre><code class="language-python">fruits[1:3] = [&quot;Orange&quot;, &quot;Mango&quot;]
+
+print(fruits)
+</code></pre>
+<p>Output</p>
+<pre><code>['Apple', 'Orange', 'Mango', 'Kiwi', 'Guava']
+</code></pre>
+<hr />
+<h1 id="-list-methods">⚙️ List Methods</h1>
+<h3 id="append">append()</h3>
+<p>Adds an item to the end.</p>
+<pre><code class="language-python">fruits.append(&quot;Orange&quot;)
+</code></pre>
+<hr />
+<h3 id="insert">insert()</h3>
+<p>Adds an item at a specified position.</p>
+<pre><code class="language-python">fruits.insert(1, &quot;Banana&quot;)
+</code></pre>
+<hr />
+<h3 id="remove">remove()</h3>
+<p>Removes the first matching element.</p>
+<pre><code class="language-python">fruits.remove(&quot;Banana&quot;)
+</code></pre>
+<hr />
+<h3 id="pop">pop()</h3>
+<p>Removes and returns the last element.</p>
+<pre><code class="language-python">fruits.pop()
+</code></pre>
+<hr />
+<h3 id="index">index()</h3>
+<p>Returns the index of an element.</p>
+<pre><code class="language-python">fruits.index(&quot;Cherry&quot;)
+</code></pre>
+<hr />
+<h3 id="count">count()</h3>
+<p>Counts the number of occurrences.</p>
+<pre><code class="language-python">fruits.insert(2, &quot;Banana&quot;)
+
+print(fruits.count(&quot;Banana&quot;))
+</code></pre>
+<hr />
+<h3 id="sort">sort()</h3>
+<p>Sorts the list in ascending order.</p>
+<pre><code class="language-python">fruits.sort()
+</code></pre>
+<hr />
+<h3 id="reverse">reverse()</h3>
+<p>Reverses the list.</p>
+<pre><code class="language-python">fruits.reverse()
+</code></pre>
+<hr />
+<h3 id="clear">clear()</h3>
+<p>Removes every element.</p>
+<pre><code class="language-python">fruits.clear()
+</code></pre>
+<hr />
+<h1 id="-more-slicing-examples">🔪 More Slicing Examples</h1>
+<pre><code class="language-python">numbers = [1,2,3,4,5,6,7,8,9,10]
+</code></pre>
+<pre><code class="language-python">print(numbers[2:5])
+</code></pre>
+<p>Output</p>
+<pre><code>[3,4,5]
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[:5])
+</code></pre>
+<p>Output</p>
+<pre><code>[1,2,3,4,5]
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[5:])
+</code></pre>
+<p>Output</p>
+<pre><code>[6,7,8,9,10]
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[::2])
+</code></pre>
+<p>Output</p>
+<pre><code>[1,3,5,7,9]
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[::-1])
+</code></pre>
+<p>Output</p>
+<pre><code>[10,9,8,7,6,5,4,3,2,1]
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[::3])
+</code></pre>
+<p>Output</p>
+<pre><code>[1,4,7,10]
+</code></pre>
+<hr />
+<h1 id="-iterating-over-lists">🔄 Iterating Over Lists</h1>
+<pre><code class="language-python">for number in numbers:
+    print(number)
+</code></pre>
+<hr />
+<p>Using <code>enumerate()</code></p>
+<pre><code class="language-python">for index, number in enumerate(numbers):
+    print(index, number)
+</code></pre>
+<p>Output</p>
+<pre><code>0 1
+1 2
+2 3
+...
+</code></pre>
+<p><code>enumerate()</code> returns both the index and value.</p>
+<hr />
+<h1 id="-list-comprehensions">🚀 List Comprehensions</h1>
+<p>List comprehensions provide a shorter syntax for creating lists.</p>
+<p>Traditional approach</p>
+<pre><code class="language-python">lst = []
+
+for x in range(10):
+    lst.append(x ** 2)
+
+print(lst)
+</code></pre>
+<p>Using List Comprehension</p>
+<pre><code class="language-python">squares = [x ** 2 for x in range(10)]
+
+print(squares)
+</code></pre>
+<p>Output</p>
+<pre><code>[0,1,4,9,16,25,36,49,64,81]
+</code></pre>
+<h3 id="syntax">Syntax</h3>
+<pre><code class="language-python">[expression for item in iterable]
+</code></pre>
+<p>With condition</p>
+<pre><code class="language-python">[expression for item in iterable if condition]
+</code></pre>
+<hr />
+<h1 id="-nested-list-comprehensions">🔀 Nested List Comprehensions</h1>
+<p>Example</p>
+<pre><code class="language-python">lst1 = [1,2,3,4]
+lst2 = ['a','b','c','d']
+
+pairs = [(i, j) for i in lst1 for j in lst2]
+
+print(pairs)
+</code></pre>
+<p>Output</p>
+<pre><code>[(1,'a'), (1,'b'), ...]
+</code></pre>
+<hr />
+<h1 id="-practical-examples">🌍 Practical Examples</h1>
+<h2 id="even-numbers">Even Numbers</h2>
+<p>Traditional</p>
+<pre><code class="language-python">lst = []
+
+for i in range(10):
+
+    if i % 2 == 0:
+        lst.append(i)
+
+print(lst)
+</code></pre>
+<p>List Comprehension</p>
+<pre><code class="language-python">even_numbers = [num for num in range(10) if num % 2 == 0]
+
+print(even_numbers)
+</code></pre>
+<p>Output</p>
+<pre><code>[0,2,4,6,8]
+</code></pre>
+<hr />
+<h2 id="using-function-calls">Using Function Calls</h2>
+<pre><code class="language-python">words = [&quot;hello&quot;, &quot;world&quot;, &quot;python&quot;, &quot;list&quot;, &quot;comprehension&quot;]
+
+lengths = [len(word) for word in words]
+
+print(lengths)
+</code></pre>
+<p>Output</p>
+<pre><code>[5,5,6,4,13]
+</code></pre>
+<hr />
+<h1 id="-common-errors">❌ Common Errors</h1>
+<h3 id="forgetting-square-brackets">Forgetting Square Brackets</h3>
+<p>❌</p>
+<pre><code class="language-python">numbers = (1,2,3)
+</code></pre>
+<p>Creates a tuple instead of a list.</p>
+<hr />
+<h3 id="index-out-of-range">Index Out of Range</h3>
+<pre><code class="language-python">numbers = [1,2,3]
+
+print(numbers[5])
+</code></pre>
+<p>Raises</p>
+<pre><code>IndexError
+</code></pre>
+<hr />
+<h3 id="removing-an-item-that-doesnt-exist">Removing an Item That Doesn't Exist</h3>
+<pre><code class="language-python">fruits.remove(&quot;Pineapple&quot;)
+</code></pre>
+<p>Raises</p>
+<pre><code>ValueError
+</code></pre>
+<hr />
+<h1 id="-best-practices">✅ Best Practices</h1>
+<ul>
+<li>Use meaningful list names.</li>
+<li>Prefer list comprehensions for simple operations.</li>
+<li>Avoid modifying a list while iterating over it.</li>
+<li>Use built-in methods instead of writing custom code.</li>
+<li>Keep list elements of similar types whenever possible.</li>
+</ul>
+<hr />
+<h1 id="-summary">📚 Summary</h1>
+<p>In this chapter, you learned:</p>
+<ul>
+<li>✅ Creating lists</li>
+<li>✅ Accessing list elements</li>
+<li>✅ Modifying lists</li>
+<li>✅ List methods</li>
+<li>✅ Slicing</li>
+<li>✅ Iterating through lists</li>
+<li>✅ List comprehensions</li>
+<li>✅ Nested list comprehensions</li>
+<li>✅ Common errors</li>
+<li>✅ Best practices</li>
+</ul>
+<p>Lists are one of the most flexible and widely used data structures in Python.</p>
+<hr />
+<h1 id="-practice-exercises">💻 Practice Exercises</h1>
+<h3 id="exercise-1">Exercise 1</h3>
+<p>Create a list of five fruits and print each fruit.</p>
+<hr />
+<h3 id="exercise-2">Exercise 2</h3>
+<p>Add and remove elements using <code>append()</code> and <code>remove()</code>.</p>
+<hr />
+<h3 id="exercise-3">Exercise 3</h3>
+<p>Reverse and sort a list of numbers.</p>
+<hr />
+<h3 id="exercise-4">Exercise 4</h3>
+<p>Print only the even numbers between <strong>1 and 50</strong> using list comprehension.</p>
+<hr />
+<h3 id="exercise-5">Exercise 5</h3>
+<p>Create all possible pairs from:</p>
+<pre><code class="language-python">colors = [&quot;Red&quot;, &quot;Blue&quot;]
+
+sizes = [&quot;S&quot;, &quot;M&quot;, &quot;L&quot;]
+</code></pre>
+<p>using nested list comprehension.</p>
+<hr />
+<h2 id="-whats-next">🎯 What's Next?</h2>
+<p>In <strong>Day 06</strong>, you'll learn about:</p>
+<ul>
+<li>📦 Tuples</li>
+<li>🎯 Sets</li>
+<li>📖 Dictionaries</li>
+<li>🔁 Operations on Collections</li>
+</ul>
+<p>Happy Coding! 🚀</p></div>
+<div class="notefile">realworldexamplesoflists.md</div><div class="md"><h1 id="-real-world-examples-of-lists">📋 Real-World Examples of Lists</h1>
+<p>Lists are used everywhere in real programs. Here are a few practical examples.</p>
+<hr />
+<h2 id="-example-1-managing-a-to-do-list">✅ Example 1: Managing a To-Do List</h2>
+<pre><code class="language-python">to_do_list = [&quot;Buy Groceries&quot;, &quot;Clean the house&quot;, &quot;pay bills&quot;]
+
+# Adding tasks to the list
+to_do_list.append(&quot;Schedule meeting&quot;)
+to_do_list.append(&quot;Go for a run&quot;)
+
+# Removing a completed task
+to_do_list.remove(&quot;Clean the house&quot;)
+
+# Checking if a task is in the list
+if &quot;pay bills&quot; in to_do_list:
+    print(&quot;Don't forget to pay the utility bills&quot;)
+
+print(&quot;To-Do list remaining:&quot;)
+for task in to_do_list:
+    print(f&quot;- {task}&quot;)
+</code></pre>
+<hr />
+<h2 id="-example-2-organizing-student-grades">✅ Example 2: Organizing Student Grades</h2>
+<p>Use a list to find the highest marks, lowest marks, and average marks.</p>
+<pre><code class="language-python">grades = [85, 92, 78, 90, 88]
+
+print(&quot;Highest marks:&quot;, max(grades))
+print(&quot;Lowest marks:&quot;, min(grades))
+print(&quot;Average marks:&quot;, sum(grades) / len(grades))
+</code></pre>
+<hr />
+<h2 id="-example-3-managing-an-inventory">✅ Example 3: Managing an Inventory</h2>
+<p>Use a list to manage the inventory in a store.</p>
+<pre><code class="language-python">inventory = [&quot;apples&quot;, &quot;bananas&quot;, &quot;milk&quot;]
+
+# Adding a new item
+inventory.append(&quot;bread&quot;)
+
+# Removing an item
+inventory.remove(&quot;bananas&quot;)
+
+# Checking if an item is in stock
+if &quot;milk&quot; in inventory:
+    print(&quot;Milk is in stock&quot;)
+
+# Printing the inventory
+print(&quot;Current inventory:&quot;)
+for item in inventory:
+    print(f&quot;- {item}&quot;)
+</code></pre></div>
+<div class="notefile">tuples.md</div><div class="md"><h1 id="-day-05-tuples-in-python">📘 Day 05: Tuples in Python</h1>
+<blockquote>
+<p>Tuples are ordered and immutable collections used to store multiple items in a single variable. They are similar to lists but cannot be modified after creation.</p>
+</blockquote>
+<hr />
+<h2 id="-table-of-contents">📑 Table of Contents</h2>
+<ul>
+<li><a href="#-introduction-to-tuples">Introduction to Tuples</a></li>
+<li><a href="#-creating-tuples">Creating Tuples</a></li>
+<li><a href="#-accessing-tuple-elements">Accessing Tuple Elements</a></li>
+<li><a href="#-tuple-operations">Tuple Operations</a></li>
+<li><a href="#-immutable-nature-of-tuples">Immutable Nature of Tuples</a></li>
+<li><a href="#-tuple-methods">Tuple Methods</a></li>
+<li><a href="#-packing-and-unpacking-tuples">Packing and Unpacking Tuples</a></li>
+<li><a href="#-nested-tuples">Nested Tuples</a></li>
+<li><a href="#-iterating-over-nested-tuples">Iterating Over Nested Tuples</a></li>
+<li><a href="#-practical-examples">Practical Examples</a></li>
+<li><a href="#-common-errors">Common Errors</a></li>
+<li><a href="#-best-practices">Best Practices</a></li>
+<li><a href="#-summary">Summary</a></li>
+<li><a href="#-practice-exercises">Practice Exercises</a></li>
+</ul>
+<hr />
+<hr />
+<h1 id="-introduction-to-tuples">📖 Introduction to Tuples</h1>
+<p>A <strong>tuple</strong> is an ordered collection of items.</p>
+<p>Unlike lists, tuples are <strong>immutable</strong>, meaning their elements cannot be changed after they are created.</p>
+<p>Tuples can store different data types, including numbers, strings, Booleans, and even other tuples.</p>
+<h3 id="characteristics-of-tuples">Characteristics of Tuples</h3>
+<ul>
+<li>Ordered</li>
+<li>Immutable</li>
+<li>Allow duplicate values</li>
+<li>Can contain different data types</li>
+<li>Faster than lists for fixed data</li>
+</ul>
+<p>Example</p>
+<pre><code class="language-python">student = (&quot;Prav&quot;, 24, True)
+</code></pre>
+<hr />
+<h1 id="-creating-tuples">📝 Creating Tuples</h1>
+<h3 id="empty-tuple">Empty Tuple</h3>
+<pre><code class="language-python">empty_tuple = ()
+
+print(empty_tuple)
+</code></pre>
+<p>Output</p>
+<pre><code>()
+</code></pre>
+<hr />
+<h3 id="using-the-tuple-constructor">Using the <code>tuple()</code> Constructor</h3>
+<pre><code class="language-python">t = tuple()
+
+print(type(t))
+</code></pre>
+<p>Output</p>
+<pre><code>&lt;class 'tuple'&gt;
+</code></pre>
+<hr />
+<h3 id="creating-a-list">Creating a List</h3>
+<pre><code class="language-python">lst = list()
+
+print(type(lst))
+</code></pre>
+<p>Output</p>
+<pre><code>&lt;class 'list'&gt;
+</code></pre>
+<hr />
+<h3 id="converting-a-list-to-a-tuple">Converting a List to a Tuple</h3>
+<pre><code class="language-python">numbers = tuple([1, 2, 3, 4, 5, 6])
+
+print(numbers)
+</code></pre>
+<p>Output</p>
+<pre><code>(1, 2, 3, 4, 5, 6)
+</code></pre>
+<hr />
+<h3 id="converting-a-tuple-to-a-list">Converting a Tuple to a List</h3>
+<pre><code class="language-python">numbers_list = list((1, 2, 3, 4, 5, 6))
+
+print(numbers_list)
+</code></pre>
+<p>Output</p>
+<pre><code>[1, 2, 3, 4, 5, 6]
+</code></pre>
+<hr />
+<h3 id="mixed-data-types">Mixed Data Types</h3>
+<pre><code class="language-python">mixed_tuple = (1, &quot;Hello World&quot;, 3.14, True)
+
+print(mixed_tuple)
+</code></pre>
+<hr />
+<h1 id="-accessing-tuple-elements">🔍 Accessing Tuple Elements</h1>
+<p>Tuple indexing works exactly like lists.</p>
+<pre><code class="language-python">numbers = (10, 20, 30, 40, 50)
+</code></pre>
+<h3 id="positive-index">Positive Index</h3>
+<pre><code class="language-python">print(numbers[2])
+</code></pre>
+<p>Output</p>
+<pre><code>30
+</code></pre>
+<hr />
+<h3 id="negative-index">Negative Index</h3>
+<pre><code class="language-python">print(numbers[-1])
+</code></pre>
+<p>Output</p>
+<pre><code>50
+</code></pre>
+<hr />
+<h3 id="slicing">Slicing</h3>
+<pre><code class="language-python">print(numbers[1:4])
+</code></pre>
+<p>Output</p>
+<pre><code>(20, 30, 40)
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[:3])
+</code></pre>
+<p>Output</p>
+<pre><code>(10, 20, 30)
+</code></pre>
+<hr />
+<pre><code class="language-python">print(numbers[::2])
+</code></pre>
+<p>Output</p>
+<pre><code>(10, 30, 50)
+</code></pre>
+<hr />
+<h1 id="-tuple-operations">➕ Tuple Operations</h1>
+<h3 id="concatenation">Concatenation</h3>
+<pre><code class="language-python">numbers = (1, 2, 3)
+
+mixed_tuple = (&quot;Python&quot;, True)
+
+result = numbers + mixed_tuple
+
+print(result)
+</code></pre>
+<p>Output</p>
+<pre><code>(1, 2, 3, 'Python', True)
+</code></pre>
+<hr />
+<h3 id="repetition">Repetition</h3>
+<pre><code class="language-python">print(mixed_tuple * 3)
+</code></pre>
+<p>Output</p>
+<pre><code>('Python', True, 'Python', True, 'Python', True)
+</code></pre>
+<hr />
+<h1 id="-immutable-nature-of-tuples">🔒 Immutable Nature of Tuples</h1>
+<p>Lists are mutable.</p>
+<pre><code class="language-python">lst = [1, 2, 3]
+
+lst[1] = &quot;Krish&quot;
+
+print(lst)
+</code></pre>
+<p>Output</p>
+<pre><code>[1, 'Krish', 3]
+</code></pre>
+<p>Tuples are immutable.</p>
+<pre><code class="language-python">numbers = (1, 2, 3)
+
+numbers[1] = 10
+</code></pre>
+<p>Output</p>
+<pre><code>TypeError: 'tuple' object does not support item assignment
+</code></pre>
+<hr />
+<h1 id="-tuple-methods">⚙️ Tuple Methods</h1>
+<p>Tuples have only two built-in methods.</p>
+<h3 id="count">count()</h3>
+<p>Returns the number of occurrences.</p>
+<pre><code class="language-python">numbers = (1, 2, 3, 1, 1)
+
+print(numbers.count(1))
+</code></pre>
+<p>Output</p>
+<pre><code>3
+</code></pre>
+<hr />
+<h3 id="index">index()</h3>
+<p>Returns the first index of an element.</p>
+<pre><code class="language-python">numbers = (1, 2, 3, 4, 5)
+
+print(numbers.index(3))
+</code></pre>
+<p>Output</p>
+<pre><code>2
+</code></pre>
+<hr />
+<h1 id="-packing-and-unpacking-tuples">📦 Packing and Unpacking Tuples</h1>
+<h3 id="packing">Packing</h3>
+<p>Python automatically creates a tuple when values are separated by commas.</p>
+<pre><code class="language-python">packed_tuple = 1, &quot;Hello World&quot;, 3.14
+
+print(packed_tuple)
+</code></pre>
+<p>Output</p>
+<pre><code>(1, 'Hello World', 3.14)
+</code></pre>
+<hr />
+<h3 id="unpacking">Unpacking</h3>
+<pre><code class="language-python">a, b, c = packed_tuple
+
+print(a)
+print(b)
+print(c)
+</code></pre>
+<p>Output</p>
+<pre><code>1
+Hello World
+3.14
+</code></pre>
+<hr />
+<h3 id="unpacking-with-">Unpacking with <code>*</code></h3>
+<pre><code class="language-python">numbers = (1, 2, 3, 4, 5, 6)
+
+first, *middle, last = numbers
+
+print(first)
+print(middle)
+print(last)
+</code></pre>
+<p>Output</p>
+<pre><code>1
+[2, 3, 4, 5]
+6
+</code></pre>
+<hr />
+<h1 id="-nested-tuples">🧩 Nested Tuples</h1>
+<p>A tuple can contain other tuples.</p>
+<pre><code class="language-python">nested_tuple = (
+    (1, 2, 3, 4),
+    (6, 7, 8, 9),
+    (1, &quot;Hello&quot;, 3.14, &quot;C&quot;)
+)
+</code></pre>
+<p>Accessing elements</p>
+<pre><code class="language-python">print(nested_tuple[0])
+</code></pre>
+<p>Output</p>
+<pre><code>(1, 2, 3, 4)
+</code></pre>
+<hr />
+<pre><code class="language-python">print(nested_tuple[0][2])
+</code></pre>
+<p>Output</p>
+<pre><code>3
+</code></pre>
+<hr />
+<pre><code class="language-python">print(nested_tuple[2][:3])
+</code></pre>
+<p>Output</p>
+<pre><code>(1, 'Hello', 3.14)
+</code></pre>
+<hr />
+<h1 id="-iterating-over-nested-tuples">🔄 Iterating Over Nested Tuples</h1>
+<pre><code class="language-python">nested_tuple = (
+    (1, 2, 3),
+    (4, 5, 6),
+    (7, 8, 9)
+)
+
+for sub_tuple in nested_tuple:
+
+    for item in sub_tuple:
+        print(item, end=&quot; &quot;)
+
+    print()
+</code></pre>
+<p>Output</p>
+<pre><code>1 2 3
+4 5 6
+7 8 9
+</code></pre>
+<hr />
+<h1 id="-practical-examples">🌍 Practical Examples</h1>
+<h3 id="find-the-maximum-value">Find the Maximum Value</h3>
+<pre><code class="language-python">numbers = (10, 20, 30, 40)
+
+print(max(numbers))
+</code></pre>
+<p>Output</p>
+<pre><code>40
+</code></pre>
+<hr />
+<h3 id="find-the-minimum-value">Find the Minimum Value</h3>
+<pre><code class="language-python">print(min(numbers))
+</code></pre>
+<p>Output</p>
+<pre><code>10
+</code></pre>
+<hr />
+<h3 id="calculate-the-sum">Calculate the Sum</h3>
+<pre><code class="language-python">print(sum(numbers))
+</code></pre>
+<p>Output</p>
+<pre><code>100
+</code></pre>
+<hr />
+<h3 id="find-the-length">Find the Length</h3>
+<pre><code class="language-python">print(len(numbers))
+</code></pre>
+<p>Output</p>
+<pre><code>4
+</code></pre>
+<hr />
+<h1 id="-common-errors">❌ Common Errors</h1>
+<h3 id="trying-to-modify-a-tuple">Trying to Modify a Tuple</h3>
+<pre><code class="language-python">numbers = (1, 2, 3)
+
+numbers[0] = 10
+</code></pre>
+<p>Raises</p>
+<pre><code>TypeError
+</code></pre>
+<hr />
+<h3 id="index-out-of-range">Index Out of Range</h3>
+<pre><code class="language-python">numbers = (1, 2, 3)
+
+print(numbers[10])
+</code></pre>
+<p>Raises</p>
+<pre><code>IndexError
+</code></pre>
+<hr />
+<h3 id="incorrect-unpacking">Incorrect Unpacking</h3>
+<pre><code class="language-python">a, b = (1, 2, 3)
+</code></pre>
+<p>Raises</p>
+<pre><code>ValueError
+</code></pre>
+<hr />
+<h1 id="-best-practices">✅ Best Practices</h1>
+<ul>
+<li>Use tuples for data that should not change.</li>
+<li>Use meaningful variable names.</li>
+<li>Prefer tuples for fixed collections.</li>
+<li>Use packing and unpacking to write cleaner code.</li>
+<li>Use lists instead of tuples when frequent modifications are required.</li>
+</ul>
+<hr />
+<h1 id="-summary">📚 Summary</h1>
+<p>In this chapter, you learned:</p>
+<ul>
+<li>✅ Creating tuples</li>
+<li>✅ Accessing tuple elements</li>
+<li>✅ Tuple operations</li>
+<li>✅ Tuple immutability</li>
+<li>✅ Tuple methods</li>
+<li>✅ Packing and unpacking</li>
+<li>✅ Nested tuples</li>
+<li>✅ Iterating through nested tuples</li>
+<li>✅ Practical examples</li>
+<li>✅ Common errors</li>
+<li>✅ Best practices</li>
+</ul>
+<p>Tuples are ideal for storing fixed collections of data because they are lightweight, ordered, and immutable.</p>
+<hr />
+<h1 id="-practice-exercises">💻 Practice Exercises</h1>
+<h3 id="exercise-1">Exercise 1</h3>
+<p>Create a tuple containing your name, age, and city.</p>
+<hr />
+<h3 id="exercise-2">Exercise 2</h3>
+<p>Convert a list into a tuple and print its type.</p>
+<hr />
+<h3 id="exercise-3">Exercise 3</h3>
+<p>Unpack the following tuple:</p>
+<pre><code class="language-python">student = (&quot;John&quot;, 22, &quot;Python&quot;)
+</code></pre>
+<hr />
+<h3 id="exercise-4">Exercise 4</h3>
+<p>Find the maximum, minimum, and sum of:</p>
+<pre><code class="language-python">numbers = (12, 25, 18, 40, 7)
+</code></pre>
+<hr />
+<h3 id="exercise-5">Exercise 5</h3>
+<p>Create a nested tuple and print every element using nested loops.</p>
+<hr />
+<h2 id="-whats-next">🎯 What's Next?</h2>
+<p>In <strong>Day 06</strong>, you'll learn about:
+- 📖 Dictionaries</p>
+<p>Happy Coding! 🚀</p></div>
+  </section>
+
+  <section class="section" id="code">
+    <div class="sec-h">Notebook Code</div>
+    <div class="sec-sub">The real code cells from this day's notebooks. Press Run to reveal each saved output.</div>
+    <div class="nbtitle">Dictionaries.ipynb</div>
+<div class="cell"><div class="cell-head"><span class="in">In [1]</span><button class="run">▸ Run</button></div><pre><code>student = {
+    &quot;name&quot;: &quot;prav&quot;,
+    &quot;age&quot;: 32,
+    &quot;grade&quot;: &quot;A&quot;
+}
+print(student)
+print(type(student))</code></pre><div class="out"><div class="olab">Output</div><pre>{&#x27;name&#x27;: &#x27;prav&#x27;, &#x27;age&#x27;: 32, &#x27;grade&#x27;: &#x27;A&#x27;}
+&lt;class &#x27;dict&#x27;&gt;</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [2]</span><button class="run">▸ Run</button></div><pre><code>#Creating dictionaries
+empty_dict = {}
+empty_dict = dict()
+#Duplicate keys
+student = {
+    &quot;name&quot;: &quot;Prav&quot;,
+    &quot;age&quot;: 27,
+    &quot;name&quot;: &quot;prav2&quot;
+}
+
+print(student)
+#Dictionary keys must be unique. If duplicate keys exist, the last value overwrites the previous one.</code></pre><div class="out"><div class="olab">Output</div><pre>{&#x27;name&#x27;: &#x27;prav2&#x27;, &#x27;age&#x27;: 27}</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [3]</span><button class="run">▸ Run</button></div><pre><code>#Accessing Dictionary Elements
+student = {
+    &#x27;name&#x27; : &#x27;prav&#x27;,
+    &#x27;age&#x27;:32,
+    &#x27;grade&#x27; :&#x27;A&#x27;
+}
+print(student[&#x27;grade&#x27;]) #Using Square Brackets
+print(student[&#x27;name&#x27;])
+print(student.get(&quot;grade&quot;))#using get function
+print(student.get(&quot;last_name&quot;))#if the key is not present it will return none
+print(student.get(&quot;last_name&quot;, &quot;Not Available&quot;))#Providing a default value if key is not present</code></pre><div class="out"><div class="olab">Output</div><pre>A
+prav
+A
+None
+Not Available</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [4]</span></div><pre><code>#Modifying Dictionaries
+student[&quot;age&quot;] = 33 #updating a value
+student[&quot;address&quot;] = &quot;India&quot;#adding a key
+del student[&quot;grade&quot;]#deleting a key</code></pre></div>
+<div class="cell"><div class="cell-head"><span class="in">In [5]</span><button class="run">▸ Run</button></div><pre><code>#Dictionary methods
+print(student.keys())#Get all keys
+print(student.values())#Get all values
+print(student.items())#Get all items
+student.pop(&quot;age&quot;) #removes a key
+student.clear()#clears the dictionary</code></pre><div class="out"><div class="olab">Output</div><pre>dict_keys([&#x27;name&#x27;, &#x27;age&#x27;, &#x27;address&#x27;])
+dict_values([&#x27;prav&#x27;, 33, &#x27;India&#x27;])
+dict_items([(&#x27;name&#x27;, &#x27;prav&#x27;), (&#x27;age&#x27;, 33), (&#x27;address&#x27;, &#x27;India&#x27;)])</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [6]</span><button class="run">▸ Run</button></div><pre><code>#Shallow copy 
+#we have to use copy() method otherwise if any one thing in dictionary changes the other thing also changes
+student = {
+    &quot;name&quot;: &quot;Prav&quot;,
+    &quot;age&quot;: 32
+}
+student_copy = student
+student[&quot;name&quot;] = &quot;Prav2&quot;
+print(student)
+print(student_copy)
+#Creating a shallow copy
+student_copy = student.copy()
+student[&quot;name&quot;] = &quot;Prav3&quot;
+print(student)
+print(student_copy)</code></pre><div class="out"><div class="olab">Output</div><pre>{&#x27;name&#x27;: &#x27;Prav2&#x27;, &#x27;age&#x27;: 32}
+{&#x27;name&#x27;: &#x27;Prav2&#x27;, &#x27;age&#x27;: 32}
+{&#x27;name&#x27;: &#x27;Prav3&#x27;, &#x27;age&#x27;: 32}
+{&#x27;name&#x27;: &#x27;Prav2&#x27;, &#x27;age&#x27;: 32}</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [7]</span><button class="run">▸ Run</button></div><pre><code>#Nested Dictionaries
+students = {
+    &quot;student1&quot;: {
+        &quot;name&quot;: &quot;Rikku&quot;,
+        &quot;age&quot;: 32
+    },
+    &quot;student2&quot;: {
+        &quot;name&quot;: &quot;Prav&quot;,
+        &quot;age&quot;: 28
+    }
+}
+print(students[&quot;student2&quot;][&quot;name&quot;])</code></pre><div class="out"><div class="olab">Output</div><pre>Prav</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [8]</span><button class="run">▸ Run</button></div><pre><code>for student_id, student_info in students.items():
+    print(student_id)
+    for key, value in student_info.items():
+        print(f&quot;{key}: {value}&quot;)</code></pre><div class="out"><div class="olab">Output</div><pre>student1
+name: Rikku
+age: 32
+student2
+name: Prav
+age: 28</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [9]</span><button class="run">▸ Run</button></div><pre><code>#Dictionary Comprehensions
+squares = {x: x**2 for x in range(5)}
+#Conditional Dictionary Comprehension
+evens = {x: x**2 for x in range(10) if x % 2 == 0}
+print(evens)</code></pre><div class="out"><div class="olab">Output</div><pre>{0: 0, 2: 4, 4: 16, 6: 36, 8: 64}</pre></div></div>
+<div class="nbtitle">Lists.ipynb</div>
+<div class="cell"><div class="cell-head"><span class="in">In [1]</span><button class="run">▸ Run</button></div><pre><code>lst = []
+print(type(lst))</code></pre><div class="out"><div class="olab">Output</div><pre>&lt;class &#x27;list&#x27;&gt;</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [2]</span><button class="run">▸ Run</button></div><pre><code>names =[&quot;pravarika&quot;, &quot;rikku&quot;, &quot;prav&quot;]
+print(names)</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;pravarika&#x27;, &#x27;rikku&#x27;, &#x27;prav&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [3]</span><button class="run">▸ Run</button></div><pre><code>lst = [1,1.2,True,&quot;pravarika&quot;]
+print(lst)</code></pre><div class="out"><div class="olab">Output</div><pre>[1, 1.2, True, &#x27;pravarika&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [4]</span><button class="run">▸ Run</button></div><pre><code>fruits = [&quot;apple&quot;, &quot;cherry&quot;, &quot;orange&quot;, &quot;banana&quot;, &quot;grapes&quot;]
+print(fruits[0])
+print(fruits[1:5]) #last index 5 will not be included
+print(fruits[2:]) #from index 2 every element will be printed
+print(fruits[:3]) #everything upto index 2 will be printed
+numbers = [1,2,3,4,5,6,7,8,9,10]
+print(numbers[::2])#slicing
+print(numbers[::-1])#slicing in reverse
+print(numbers[::3])</code></pre><div class="out"><div class="olab">Output</div><pre>apple
+[&#x27;cherry&#x27;, &#x27;orange&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]
+[&#x27;orange&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]
+[&#x27;apple&#x27;, &#x27;cherry&#x27;, &#x27;orange&#x27;]
+[1, 3, 5, 7, 9]
+[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+[1, 4, 7, 10]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [5]</span><button class="run">▸ Run</button></div><pre><code>fruits[1] = &quot;watermelon&quot;
+print(fruits)</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;watermelon&#x27;, &#x27;orange&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [6]</span><button class="run">▸ Run</button></div><pre><code>fruits[1:3] = [&quot;Orange&quot;, &quot;Mango&quot;]
+
+print(fruits)</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [7]</span><button class="run">▸ Run</button></div><pre><code>#append
+#Adds an item to the end.
+fruits.append(&quot;Orange&quot;)
+fruits</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;, &#x27;Orange&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [8]</span><button class="run">▸ Run</button></div><pre><code>#insert
+#Add item at a specific position
+fruits.insert(1,&quot;kiwi&quot;)
+fruits</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;kiwi&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;, &#x27;Orange&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [9]</span><button class="run">▸ Run</button></div><pre><code>#remove
+#remove that particular element
+fruits.remove(&quot;kiwi&quot;)
+fruits</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;, &#x27;Orange&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [10]</span><button class="run">▸ Run</button></div><pre><code>#pop 
+#removes the last element
+fruits.pop()
+fruits</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;apple&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [11]</span><button class="run">▸ Run</button></div><pre><code>#index
+#gives the index of that particular element
+fruits.index(&quot;Mango&quot;)</code></pre><div class="out"><div class="olab">Output</div><pre>2</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [12]</span><button class="run">▸ Run</button></div><pre><code>#count
+#gives the count of that particular element
+print(fruits.count(&quot;kiwi&quot;))</code></pre><div class="out"><div class="olab">Output</div><pre>0</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [13]</span><button class="run">▸ Run</button></div><pre><code>#sort
+#sort the list in ascending order
+fruits.sort()
+print(fruits)</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;Mango&#x27;, &#x27;Orange&#x27;, &#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;grapes&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [14]</span><button class="run">▸ Run</button></div><pre><code>#reverse
+#reverse the list elements
+fruits.reverse()
+print(fruits)</code></pre><div class="out"><div class="olab">Output</div><pre>[&#x27;grapes&#x27;, &#x27;banana&#x27;, &#x27;apple&#x27;, &#x27;Orange&#x27;, &#x27;Mango&#x27;]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [15]</span><button class="run">▸ Run</button></div><pre><code>#clear
+#clear the whole list elements
+fruits.clear()
+print(fruits)</code></pre><div class="out"><div class="olab">Output</div><pre>[]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [16]</span><button class="run">▸ Run</button></div><pre><code>#Iterating over lists
+numbers = [1,2,3]
+for number in numbers:
+    print(number)
+for index,number in enumerate(numbers): #to get index we need to use enumerate
+    print(index,number)</code></pre><div class="out"><div class="olab">Output</div><pre>1
+2
+3
+0 1
+1 2
+2 3</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [17]</span><button class="run">▸ Run</button></div><pre><code>#list comprehension
+#without list comprehension
+lst = []
+
+for x in range(10):
+    lst.append(x ** 2)
+
+print(lst)
+
+#using list comprehension
+#[expression for item in iterable]
+squares = [x**2 for x in range(10)]
+print(squares)
+
+#using list comprehesion with condition
+#[expression for item in iterable if condition]
+squareswitheven = [x**2 for x in range(10) if x%2==0]
+print(squareswitheven)</code></pre><div class="out"><div class="olab">Output</div><pre>[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+[0, 4, 16, 36, 64]</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [18]</span><button class="run">▸ Run</button></div><pre><code>#Nested list comprehension
+lst1=[1,2,3,4]
+lst2=[&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;]
+pairs = [(i,j) for i in lst1 for j in lst2]
+print(pairs)</code></pre><div class="out"><div class="olab">Output</div><pre>[(1, &#x27;a&#x27;), (1, &#x27;b&#x27;), (1, &#x27;c&#x27;), (1, &#x27;d&#x27;), (2, &#x27;a&#x27;), (2, &#x27;b&#x27;), (2, &#x27;c&#x27;), (2, &#x27;d&#x27;), (3, &#x27;a&#x27;), (3, &#x27;b&#x27;), (3, &#x27;c&#x27;), (3, &#x27;d&#x27;), (4, &#x27;a&#x27;), (4, &#x27;b&#x27;), (4, &#x27;c&#x27;), (4, &#x27;d&#x27;)]</pre></div></div>
+<div class="nbtitle">tuples.ipynb</div>
+<div class="cell"><div class="cell-head"><span class="in">In [1]</span><button class="run">▸ Run</button></div><pre><code>#Creating tuples
+empty_tuple=()
+t=tuple()
+numbers = tuple([1, 2, 3, 4, 5, 6]) #converting list into tuple
+numbers_list = list((1, 2, 3, 4, 5, 6)) #converting tuple into list
+mixed_tuple = (1, &quot;Hello World&quot;, 3.14, True)
+print(numbers)
+print(numbers_list)
+print(mixed_tuple)</code></pre><div class="out"><div class="olab">Output</div><pre>(1, 2, 3, 4, 5, 6)
+[1, 2, 3, 4, 5, 6]
+(1, &#x27;Hello World&#x27;, 3.14, True)</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [2]</span><button class="run">▸ Run</button></div><pre><code>#Accessing elements
+numbers = (10, 20, 30, 40, 50)
+print(numbers[2])
+print(numbers[-1])
+print(numbers[1:4])#slicing
+print(numbers[:3])#slicing
+print(numbers[::2])#slicing</code></pre><div class="out"><div class="olab">Output</div><pre>30
+50
+(20, 30, 40)
+(10, 20, 30)
+(10, 30, 50)</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [3]</span><button class="run">▸ Run</button></div><pre><code>#tuple operations
+#concatination
+numbers = (1, 2, 3)
+mixed_tuple = (&quot;Python&quot;, True)
+result = numbers + mixed_tuple
+print(result)
+#mutiplication
+print(mixed_tuple * 3)</code></pre><div class="out"><div class="olab">Output</div><pre>(1, 2, 3, &#x27;Python&#x27;, True)
+(&#x27;Python&#x27;, True, &#x27;Python&#x27;, True, &#x27;Python&#x27;, True)</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [4]</span><button class="run">▸ Run</button></div><pre><code>#tuple has only two built in methods
+#count()
+#index()
+numbers = (1, 2, 3, 1, 1)
+print(numbers.count(1))#Returns the number of occurrences.
+numbers = (1, 2, 3, 4, 5)
+print(numbers.index(3))#Returns the first index of an element.</code></pre><div class="out"><div class="olab">Output</div><pre>3
+2</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [5]</span><button class="run">▸ Run</button></div><pre><code>#Packing and unpacking of tuple
+#Python automatically creates a tuple when values are separated by commas.
+packed_tuple = 1, &quot;Hello World&quot;, 3.14 #packing
+print(packed_tuple)
+a, b, c = packed_tuple #unpacking
+print(a)
+print(b)
+print(c)</code></pre><div class="out"><div class="olab">Output</div><pre>(1, &#x27;Hello World&#x27;, 3.14)
+1
+Hello World
+3.14</pre></div></div>
+<div class="cell"><div class="cell-head"><span class="in">In [6]</span><button class="run">▸ Run</button></div><pre><code>#Nested tuples
+#A tuple can contain other tuples.
+nested_tuple = (
+    (1, 2, 3, 4),
+    (6, 7, 8, 9),
+    (1, &quot;Hello&quot;, 3.14, &quot;C&quot;)
+)
+print(nested_tuple[0])
+print(nested_tuple[0][2])
+#iterating over nested tuples
+nested_tuple = (
+    (1, 2, 3),
+    (4, 5, 6),
+    (7, 8, 9)
+)
+for sub_tuple in nested_tuple:
+    for item in sub_tuple:
+        print(item, end=&quot; &quot;)
+
+    print()</code></pre><div class="out"><div class="olab">Output</div><pre>(1, 2, 3, 4)
+3
+1 2 3 
+4 5 6 
+7 8 9 </pre></div></div>
+  </section>
+
+  <nav class="pager"><a href="day-04.html"><div class="k">‹ Day 04</div><div class="v">Control Flow</div></a><a class="next" href="day-06.html"><div class="k">Day 06 ›</div><div class="v">Functions</div></a></nav>
+</div>
+<script>
+(function(){
+var KW=/^(?:def|class|if|elif|else|for|while|return|import|from|try|except|finally|raise|with|as|in|not|and|or|is|pass|break|continue|lambda|True|False|None|global|nonlocal|assert|del|yield)$/;
+var BI=/^(?:print|type|len|range|int|str|float|bool|list|tuple|dict|set|map|filter|open|input|sum|max|min|super|abs|sorted|enumerate|zip|round|isinstance|format)$/;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function hl(code){
+  var re=/(#[^\n]*)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(\b\d+\.?\d*\b)|([A-Za-z_][A-Za-z0-9_]*)/g;
+  var out="",last=0,m;
+  while((m=re.exec(code))){out+=esc(code.slice(last,m.index));var t=m[0];
+    if(m[1])out+='<span class="tok-com">'+esc(t)+'</span>';
+    else if(m[2])out+='<span class="tok-str">'+esc(t)+'</span>';
+    else if(m[3])out+='<span class="tok-num">'+esc(t)+'</span>';
+    else if(m[4]){if(t==="self")out+='<span class="tok-self">self</span>';
+      else if(KW.test(t))out+='<span class="tok-key">'+t+'</span>';
+      else if(BI.test(t))out+='<span class="tok-fn">'+t+'</span>';else out+=esc(t);}
+    else out+=esc(t);last=re.lastIndex;}
+  return out+esc(code.slice(last));
+}
+document.querySelectorAll("pre code").forEach(function(c){c.innerHTML=hl(c.textContent);});
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".run"); if(!b)return;
+  var out=b.closest(".cell").querySelector(".out");
+  if(out){out.classList.add("show");b.textContent="✓ Ran";b.disabled=true;}
+});
+})();
+</script>
+</body>
+</html>
